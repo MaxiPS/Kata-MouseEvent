@@ -20,10 +20,19 @@ describe("Mouse Should", () => {
     mouse.subscribe(mockListener);
   });
 
-  it("detect click when mouse is clicked", () => {
-    mouse.pressLeftButton(200);
-    mouse.releaseLeftButton(400);
+  it("correctly detect a single click", () => {
+    mouse.pressLeftButton(0);
+    mouse.releaseLeftButton(0);
+
     expect(mockListener.lastEvent).toBe(EventType.Click);
   });
 
+  it("correctly detect a double click", () => {
+    mouse.pressLeftButton(0);
+    mouse.releaseLeftButton(0);
+    mouse.pressLeftButton(0);
+    mouse.releaseLeftButton(0);
+
+    expect(mockListener.lastEvent).toBe(EventType.DoubleClick);
+  });
 });
