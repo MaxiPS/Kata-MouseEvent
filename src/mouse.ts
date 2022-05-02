@@ -1,39 +1,35 @@
-
-// system.currentMill()
-
-// (ClickCurrentMillis - AnotherClickCurrentMillis - AnotherClickCurrentMillis < 500) [TripleClick]
-// (ClickCurrentMillis -  < 500) [TripleClick]
-//if (ClickCurrentMillis - AnotherClickCurrentMillis < 500) [DoubleClick(500milis),Click(800)]
-
-
-
+import { Coordinates } from "./coordinates";
+import { EventType } from "./event-type";
+import { Listener } from "./listener";
 
 export class Mouse {
   listeners;
   timeWindowInMillisecondsForDoubleClick;
 
   constructor() {
-    this.listeners = new Array();
+    this.listeners = new Array<Listener>();
     this.timeWindowInMillisecondsForDoubleClick = 500;
   }
 
-  pressLeftButton = (currentTimeInMilliseconds: number) => {
-    
-  };
+  pressLeftButton = (currentTimeInMilliseconds: number) => {};
 
   releaseLeftButton = (currentTimeInMilliseconds: number) => {
     /*... implement this method ...*/
   };
 
-  move = (from, to, currentTimeInMilliseconds) => {
+  move = (
+    from: Coordinates,
+    to: Coordinates,
+    currentTimeInMilliseconds: number
+  ) => {
     /*... implement this method ...*/
   };
 
-  subscribe = (listener) => {
+  subscribe = (listener: Listener) => {
     this.listeners.push(listener);
   };
 
-  notifySubscribers = (eventType) => {
+  notifySubscribers = (eventType: EventType) => {
     this.listeners.forEach((listener) => listener.handleMouseEvent(eventType));
   };
 }
