@@ -11,10 +11,12 @@ export class Mouse {
     this.timeWindowInMillisecondsForDoubleClick = 500;
   }
 
-  pressLeftButton = (currentTimeInMilliseconds: number) => {};
+  pressLeftButton = (currentTimeInMilliseconds: number) => {
+    
+  };
 
   releaseLeftButton = (currentTimeInMilliseconds: number) => {
-    /*... implement this method ...*/
+    this.notifySubscribers(EventType.Click);
   };
 
   move = (
