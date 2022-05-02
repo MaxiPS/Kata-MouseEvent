@@ -2,36 +2,59 @@ import { Coordinates } from "./coordinates";
 import { EventType } from "./event-type";
 import { Listener } from "./listener";
 
+/*
+press 0 0
+release 100 click
+press 400
+release 600 click
+press 700
+release 700 click X
+*/
+
 export class Mouse {
   listeners: Listener[];
-  timeWindowInMillisecondsForDoubleClick: number;
-  clicked: boolean;
-  lastTimePressed: number;
+  timeWindowInMilliseconds: number;
+  clicksInCurrentWindow: number;
+  lastPressesTimes: number[];
 
   constructor() {
     this.listeners = new Array<Listener>();
-    this.timeWindowInMillisecondsForDoubleClick = 500;
-    this.clicked = false;
+    this.timeWindowInMilliseconds = 500;
+    this.clicksInCurrentWindow = 0;
+    this.lastPressesTimes = [];
   }
 
   pressLeftButton = (currentTimeInMilliseconds: number) => {
-    if (!this.clicked) {
-      this.lastTimePressed = currentTimeInMilliseconds;
-    }
+    this.lastPressesTimes.push(currentTimeInMilliseconds);
   };
 
   releaseLeftButton = (currentTimeInMilliseconds: number) => {
-    if (
-      this.clicked &&
-      currentTimeInMilliseconds - this.lastTimePressed <
-        this.timeWindowInMillisecondsForDoubleClick
+    const firstPressInWindow = this.lastPressesTimes[0];
+    if (currentTimeInMilliseconds - firstPressInWindow >=
+      this.timeWindowInMilliseconds
     ) {
-      this.notifySubscribers(EventType.DoubleClick);
-      this.clicked = false;
-    } else {
-      this.notifySubscribers(EventType.Click);
-      this.clicked = true;
+      this.clicksInCurrentWindow = 0;
+      this.lastPressesTimes = this.lastPressesTimes.slice(-1);
     }
+
+    let currentEventType: EventType;
+    switch (this.clicksInCurrentWindow) {
+      case 0:
+        currentEventType = EventType.Click;
+        this.clicksInCurrentWindow++;
+        break;
+      case 1:
+        currentEventType = EventType.DoubleClick;
+        this.clicksInCurrentWindow++;
+        break;
+      case 2:
+        currentEventType = EventType.TripleClick;
+        this.clicksInCurrentWindow = 0;
+        break;
+      default:
+        break;
+    }
+    this.notifySubscribers(currentEventType);
   };
 
   move = (

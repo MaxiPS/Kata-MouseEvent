@@ -33,28 +33,38 @@ describe("Mouse Should", () => {
   it("correctly detect a single click", () => {
     sendInstantClick(0);
 
-    expect(mockListener.eventList.pop()).toStrictEqual(EventType.Click);
+    expect(mockListener.eventList).toStrictEqual([EventType.Click]);
   });
 
   it("correctly detect a double click", () => {
     sendInstantClick(0);
     sendInstantClick(0);
 
-    expect(mockListener.eventList.pop()).toStrictEqual(EventType.DoubleClick);
+    expect(mockListener.eventList).toStrictEqual([
+      EventType.Click,
+      EventType.DoubleClick,
+    ]);
   });
 
   it("correctly detects two different clicks", () => {
     sendInstantClick(0);
     sendInstantClick(500);
 
-    expect(mockListener.eventList).toStrictEqual([EventType.Click, EventType.Click]);
+    expect(mockListener.eventList).toStrictEqual([
+      EventType.Click,
+      EventType.Click,
+    ]);
   });
 
-  it("correctly detects a triple click",() => {
+  it("correctly detects a triple click", () => {
     sendInstantClick(0);
     sendInstantClick(0);
     sendInstantClick(0);
 
-    expect(mockListener.eventList.pop()).toStrictEqual(EventType.TripleClick);
+    expect(mockListener.eventList).toStrictEqual([
+      EventType.Click,
+      EventType.DoubleClick,
+      EventType.TripleClick,
+    ]);
   });
 });
