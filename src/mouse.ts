@@ -44,6 +44,7 @@ export class Mouse {
         break;
       case 3:
         currentEventType = EventType.TripleClick;
+        this.lastPressesTimes = [];
         break;
       default:
         break;
