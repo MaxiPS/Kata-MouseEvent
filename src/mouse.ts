@@ -3,12 +3,14 @@ import { EventType } from "./event-type";
 import { Listener } from "./listener";
 
 export class Mouse {
-  listeners;
-  timeWindowInMillisecondsForDoubleClick;
+  listeners: Listener[];
+  timeWindowInMillisecondsForDoubleClick: number;
+  clicked: boolean;
 
   constructor() {
     this.listeners = new Array<Listener>();
     this.timeWindowInMillisecondsForDoubleClick = 500;
+    this.clicked = false;
   }
 
   pressLeftButton = (currentTimeInMilliseconds: number) => {
@@ -16,7 +18,12 @@ export class Mouse {
   };
 
   releaseLeftButton = (currentTimeInMilliseconds: number) => {
-    this.notifySubscribers(EventType.Click);
+    if (!this.clicked) {
+      this.notifySubscribers(EventType.Click);
+      this.clicked = true;
+    } else {
+      this.notifySubscribers(EventType.DoubleClick);
+    }
   };
 
   move = (
