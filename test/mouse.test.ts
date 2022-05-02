@@ -4,9 +4,14 @@ import { Listener } from "../src/listener";
 import { Mouse } from "../src/mouse";
 
 class MockListener implements Listener {
-  lastEvent: EventType;
+  eventList: EventType[];
+
+  constructor() {
+    this.eventList = [];
+  }
+
   handleMouseEvent(eventType: EventType) {
-    this.lastEvent = eventType;
+    this.eventList.push(eventType);
   }
 }
 
@@ -24,7 +29,7 @@ describe("Mouse Should", () => {
     mouse.pressLeftButton(0);
     mouse.releaseLeftButton(0);
 
-    expect(mockListener.lastEvent).toBe(EventType.Click);
+    expect(mockListener.eventList.pop()).toStrictEqual(EventType.Click);
   });
 
   it("correctly detect a double click", () => {
@@ -33,6 +38,8 @@ describe("Mouse Should", () => {
     mouse.pressLeftButton(0);
     mouse.releaseLeftButton(0);
 
-    expect(mockListener.lastEvent).toBe(EventType.DoubleClick);
+    expect(mockListener.eventList.pop()).toStrictEqual(EventType.DoubleClick);
   });
+
+ 
 });
