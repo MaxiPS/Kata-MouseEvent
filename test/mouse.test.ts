@@ -67,4 +67,18 @@ describe("Mouse Should", () => {
       EventType.TripleClick,
     ]);
   });
+
+  it("reset after a triple click", () => {
+    sendInstantClick(0);
+    sendInstantClick(0);
+    sendInstantClick(0);
+    sendInstantClick(0);
+
+    expect(mockListener.eventList).toStrictEqual([
+      EventType.Click,
+      EventType.DoubleClick,
+      EventType.TripleClick,
+      EventType.Click,
+    ]);
+  });
 });

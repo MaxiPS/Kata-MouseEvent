@@ -14,13 +14,11 @@ release 700 click X
 export class Mouse {
   listeners: Listener[];
   timeWindowInMilliseconds: number;
-  clicksInCurrentWindow: number;
   lastPressesTimes: number[];
 
   constructor() {
     this.listeners = new Array<Listener>();
     this.timeWindowInMilliseconds = 500;
-    this.clicksInCurrentWindow = 0;
     this.lastPressesTimes = [];
   }
 
@@ -33,23 +31,19 @@ export class Mouse {
     if (currentTimeInMilliseconds - firstPressInWindow >=
       this.timeWindowInMilliseconds
     ) {
-      this.clicksInCurrentWindow = 0;
       this.lastPressesTimes = this.lastPressesTimes.slice(-1);
     }
 
     let currentEventType: EventType;
-    switch (this.clicksInCurrentWindow) {
-      case 0:
-        currentEventType = EventType.Click;
-        this.clicksInCurrentWindow++;
-        break;
+    switch (this.lastPressesTimes.length) {
       case 1:
-        currentEventType = EventType.DoubleClick;
-        this.clicksInCurrentWindow++;
+        currentEventType = EventType.Click;
         break;
       case 2:
+        currentEventType = EventType.DoubleClick;
+        break;
+      case 3:
         currentEventType = EventType.TripleClick;
-        this.clicksInCurrentWindow = 0;
         break;
       default:
         break;
