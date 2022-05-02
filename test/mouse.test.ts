@@ -49,4 +49,12 @@ describe("Mouse Should", () => {
 
     expect(mockListener.eventList).toStrictEqual([EventType.Click, EventType.Click]);
   });
+
+  it("correctly detects a triple click",() => {
+    sendInstantClick(0);
+    sendInstantClick(0);
+    sendInstantClick(0);
+
+    expect(mockListener.eventList.pop()).toStrictEqual(EventType.TripleClick);
+  });
 });
