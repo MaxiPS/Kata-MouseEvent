@@ -19,6 +19,11 @@ describe("Mouse Should", () => {
   let mouse: Mouse;
   let mockListener: MockListener;
 
+  const sendInstantClick = (time: number) => {
+    mouse.pressLeftButton(time);
+    mouse.releaseLeftButton(time);
+  };
+
   beforeEach(() => {
     mouse = new Mouse();
     mockListener = new MockListener();
@@ -26,30 +31,22 @@ describe("Mouse Should", () => {
   });
 
   it("correctly detect a single click", () => {
-    mouse.pressLeftButton(0);
-    mouse.releaseLeftButton(0);
+    sendInstantClick(0);
 
     expect(mockListener.eventList.pop()).toStrictEqual(EventType.Click);
   });
 
   it("correctly detect a double click", () => {
-    mouse.pressLeftButton(0);
-    mouse.releaseLeftButton(0);
-    mouse.pressLeftButton(0);
-    mouse.releaseLeftButton(0);
+    sendInstantClick(0);
+    sendInstantClick(0);
 
     expect(mockListener.eventList.pop()).toStrictEqual(EventType.DoubleClick);
   });
 
-  it("correctly detect two different clicks", () => {
-    mouse.pressLeftButton(0);
-    mouse.releaseLeftButton(0);
-
-    mouse.pressLeftButton(500);
-    mouse.releaseLeftButton(500);
+  it("correctly detects two different clicks", () => {
+    sendInstantClick(0);
+    sendInstantClick(500);
 
     expect(mockListener.eventList).toStrictEqual([EventType.Click, EventType.Click]);
   });
-
- 
 });
