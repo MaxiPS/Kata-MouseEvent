@@ -20,7 +20,7 @@ describe("Mouse Should", () => {
     mouse.subscribe(mockListener);
   });
 
-  it("detect clicks when mouse is clicked", () => {
+  it("detect click when mouse is clicked", () => {
     mouse.pressLeftButton(200);
     mouse.releaseLeftButton(400);
     expect(mockListener.lastEvent).toBe(EventType.Click);
