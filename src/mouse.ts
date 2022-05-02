@@ -6,6 +6,7 @@ export class Mouse {
   listeners: Listener[];
   timeWindowInMillisecondsForDoubleClick: number;
   clicked: boolean;
+  lastTimePressed: number;
 
   constructor() {
     this.listeners = new Array<Listener>();
@@ -14,15 +15,22 @@ export class Mouse {
   }
 
   pressLeftButton = (currentTimeInMilliseconds: number) => {
-    
+    if (!this.clicked) {
+      this.lastTimePressed = currentTimeInMilliseconds;
+    }
   };
 
   releaseLeftButton = (currentTimeInMilliseconds: number) => {
-    if (!this.clicked) {
+    if (
+      this.clicked &&
+      currentTimeInMilliseconds - this.lastTimePressed <
+        this.timeWindowInMillisecondsForDoubleClick
+    ) {
+      this.notifySubscribers(EventType.DoubleClick);
+      this.clicked = false;
+    } else {
       this.notifySubscribers(EventType.Click);
       this.clicked = true;
-    } else {
-      this.notifySubscribers(EventType.DoubleClick);
     }
   };
 
