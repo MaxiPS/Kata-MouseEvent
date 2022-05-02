@@ -41,5 +41,15 @@ describe("Mouse Should", () => {
     expect(mockListener.eventList.pop()).toStrictEqual(EventType.DoubleClick);
   });
 
+  it("correctly detect two differents click", () => {
+    mouse.pressLeftButton(0);
+    mouse.releaseLeftButton(0);
+
+    mouse.pressLeftButton(500);
+    mouse.releaseLeftButton(500);
+
+    expect(mockListener.eventList).toStrictEqual([EventType.Click, EventType.Click]);
+  });
+
  
 });
